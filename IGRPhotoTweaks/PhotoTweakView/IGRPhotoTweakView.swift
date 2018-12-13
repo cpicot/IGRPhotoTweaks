@@ -117,6 +117,10 @@ public class IGRPhotoTweakView: UIView {
     
     //MARK: - Public FUNCs
     
+    public func setMaxZoomScale(_ scale: CGFloat) {
+        self.scrollView.maximumZoomScale = scale
+    }
+    
     public func resetView() {
         let animation: (() -> Void) = { () -> Void in
             self.radians = CGFloat.zero
