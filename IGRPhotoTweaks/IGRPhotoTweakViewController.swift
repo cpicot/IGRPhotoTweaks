@@ -43,18 +43,11 @@ open class IGRPhotoTweakViewController: UIViewController {
      */
     internal var isAutoSaveToLibray: Bool = false
     
+    internal var isBorderHidden: Bool = false
+    
     //MARK: - Private VARs
     
-    public lazy var photoView: IGRPhotoTweakView? = { [unowned self] by in
-        
-        let photoView = IGRPhotoTweakView(frame: self.view.bounds,
-                                          image: self.image,
-                                          customizationDelegate: self)
-        photoView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.view.addSubview(photoView)
-        
-        return photoView
-        }(())
+    public var photoView: IGRPhotoTweakView?
     
     // MARK: - Life Cicle
     
@@ -65,7 +58,28 @@ open class IGRPhotoTweakViewController: UIViewController {
         self.view.clipsToBounds = true
         
         self.setupThemes()
-        self.setupSubviews()
+    }
+    
+    fileprivate func setupSubviews(myView: UIView) {
+        if self.photoView != nil,
+            let viewWithTag = self.photoView?.viewWithTag(100) {
+            viewWithTag.removeFromSuperview()
+            createView(myView: myView)
+        } else {
+            createView(myView: myView)
+        }
+    }
+    
+    fileprivate func createView(myView: UIView){
+        let photoView = IGRPhotoTweakView(frame: myView.bounds,
+                                           image: self.image,
+                                           customizationDelegate: self)
+        photoView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        photoView.tag = 100
+        myView.clipsToBounds = true
+        myView.addSubview(photoView)
+        self.view.sendSubviewToBack(photoView)
+        self.photoView = photoView
     }
     
     override open func didReceiveMemoryWarning() {
@@ -82,13 +96,6 @@ open class IGRPhotoTweakViewController: UIViewController {
         })
     }
     
-    fileprivate func setupSubviews() {
-        guard let photoView = self.photoView else {
-            return
-        }
-        self.view.sendSubviewToBack(photoView)
-    }
-    
     open func setupThemes() {
         IGRPhotoTweakView.appearance().backgroundColor = UIColor.photoTweakCanvasBackground()
         IGRPhotoContentView.appearance().backgroundColor = UIColor.clear
@@ -98,6 +105,11 @@ open class IGRPhotoTweakViewController: UIViewController {
         IGRCropCornerView.appearance().backgroundColor = UIColor.clear
         IGRCropCornerLine.appearance().backgroundColor = UIColor.cropLine()
         IGRCropMaskView.appearance().backgroundColor = UIColor.mask()
+    }
+    
+    open func setupCropBorder(isBorderHidden: Bool = false, myView: UIView) {
+        self.isBorderHidden = isBorderHidden
+        setupSubviews(myView: myView)
     }
     
     // MARK: - Public
@@ -150,19 +162,31 @@ open class IGRPhotoTweakViewController: UIViewController {
     //MARK: - Customization
     
     open func customBorderColor() -> UIColor {
-        return UIColor.cropLine()
+        return isBorderHidden ? UIColor.clear : UIColor.cropLine()
     }
     
     open func customBorderWidth() -> CGFloat {
-        return 1.0
+        return isBorderHidden ? 0 : 1.0
     }
     
     open func customCornerBorderWidth() -> CGFloat {
-        return kCropViewCornerWidth
+        return isBorderHidden ? 0 : kCropViewCornerWidth
     }
     
     open func customCornerBorderLength() -> CGFloat {
-        return kCropViewCornerLength
+        return isBorderHidden ? 0 : kCropViewCornerLength
+    }
+    
+    open func customIsHighlightMask() -> Bool {
+        return isBorderHidden ? false : true
+    }
+    
+    open func customHighlightMaskAlphaValue() -> CGFloat {
+        return 0.3
+    }
+    
+    open func customCanvasHeaderHeigth() -> CGFloat {
+        return kCanvasHeaderHeigth
     }
     
     open func customCropLinesCount() -> Int {
@@ -173,15 +197,4 @@ open class IGRPhotoTweakViewController: UIViewController {
         return kGridLinesCount
     }
     
-    open func customIsHighlightMask() -> Bool {
-        return true
-    }
-    
-    open func customHighlightMaskAlphaValue() -> CGFloat {
-        return 0.3
-    }
-    
-    open func customCanvasHeaderHeigth() -> CGFloat {
-        return kCanvasHeaderHeigth
-    }
 }
