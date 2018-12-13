@@ -12,11 +12,12 @@ extension UIImage {
     
     func cgImageWithFixedOrientation() -> CGImage? {
         
-        guard let cgImage = self.cgImage, let colorSpace = cgImage.colorSpace else {
+        guard let cgImage = self.cgImage,
+            let colorSpace = cgImage.colorSpace else {
             return nil
         }
         
-        if self.imageOrientation == UIImage.Orientation.up {
+        if self.imageOrientation == .up {
             return self.cgImage
         }
         
@@ -28,15 +29,15 @@ extension UIImage {
         switch self.imageOrientation {
         case .down, .downMirrored:
             transform = transform.translatedBy(x: width, y: height)
-            transform = transform.rotated(by: CGFloat.pi)
+            transform = transform.rotated(by: .pi)
             
         case .left, .leftMirrored:
             transform = transform.translatedBy(x: width, y: 0)
-            transform = transform.rotated(by: 0.5 * CGFloat.pi)
+            transform = transform.rotated(by: 0.5 * .pi)
             
         case .right, .rightMirrored:
             transform = transform.translatedBy(x: 0, y: height)
-            transform = transform.rotated(by: -0.5 * CGFloat.pi)
+            transform = transform.rotated(by: -0.5 * .pi)
             
         case .up, .upMirrored:
             break
@@ -71,10 +72,12 @@ extension UIImage {
         
         switch self.imageOrientation {
         case .left, .leftMirrored, .right, .rightMirrored:
-            context.draw(cgImage, in: CGRect(x: 0, y: 0, width: height, height: width))
+            context.draw(cgImage,
+                         in: CGRect(x: 0, y: 0, width: height, height: width))
             
         default:
-            context.draw(cgImage, in: CGRect(x: 0, y: 0, width: width, height: height))
+            context.draw(cgImage,
+                         in: CGRect(x: 0, y: 0, width: width, height: height))
         }
         
         // And now we just create a new UIImage from the drawing context

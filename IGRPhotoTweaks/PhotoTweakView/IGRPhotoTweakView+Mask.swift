@@ -35,18 +35,19 @@ extension IGRPhotoTweakView {
         if (self.isHighlightMask()) {
             let newAlphaValue: CGFloat = highlight ? self.highlightMaskAlphaValue() : 1.0
             
-            let animationBlock: (() -> Void)? = {
-                self.topMask.alpha = newAlphaValue
-                self.leftMask.alpha = newAlphaValue
-                self.bottomMask.alpha = newAlphaValue
-                self.rightMask.alpha = newAlphaValue
+            let animationBlock: (() -> Void) = { [weak self] in
+                self?.topMask?.alpha = newAlphaValue
+                self?.leftMask?.alpha = newAlphaValue
+                self?.bottomMask?.alpha = newAlphaValue
+                self?.rightMask?.alpha = newAlphaValue
             }
             
             if animate {
-                UIView.animate(withDuration: kAnimationDuration, animations: animationBlock!)
+                UIView.animate(withDuration: kAnimationDuration,
+                               animations: animationBlock)
             }
             else {
-                animationBlock!()
+                animationBlock()
             }
         }
     }

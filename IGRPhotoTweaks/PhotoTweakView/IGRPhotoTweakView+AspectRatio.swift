@@ -20,8 +20,8 @@ extension IGRPhotoTweakView {
         self.cropViewDidStopCrop(self.cropView)
     }
     
-    public func setCropAspectRect(aspect: String) {
-        self.cropView.setCropAspectRect(aspect: aspect, maxSize:self.originalSize)
+    public func setCropAspectRect(aspect: (width: CGFloat, height: CGFloat)) {
+        self.cropView.setCropAspectRect(aspect: aspect, maxSize: self.originalSize)
         self.cropView.center = self.scrollView.center
         
         self.cropViewDidStopCrop(self.cropView)

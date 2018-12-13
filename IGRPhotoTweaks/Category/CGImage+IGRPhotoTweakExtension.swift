@@ -10,7 +10,11 @@ import Foundation
 
 extension CGImage {
     
-    func transformedImage(_ transform: CGAffineTransform, zoomScale: CGFloat, sourceSize: CGSize, cropSize: CGSize, imageViewSize: CGSize) -> CGImage {
+    func transformedImage(_ transform: CGAffineTransform,
+                          zoomScale: CGFloat,
+                          sourceSize: CGSize,
+                          cropSize: CGSize,
+                          imageViewSize: CGSize) -> CGImage? {
         let expectedWidth = floor(sourceSize.width / imageViewSize.width * cropSize.width) / zoomScale
         let expectedHeight = floor(sourceSize.height / imageViewSize.height * cropSize.height) / zoomScale
         let outputSize = CGSize(width: expectedWidth, height: expectedHeight)
@@ -21,11 +25,11 @@ extension CGImage {
                                 height: Int(outputSize.height),
                                 bitsPerComponent: self.bitsPerComponent,
                                 bytesPerRow: bitmapBytesPerRow,
-                                space: self.colorSpace!,
+                                space: self.colorSpace ?? CGColorSpaceCreateDeviceRGB(),
                                 bitmapInfo: self.bitmapInfo.rawValue)
         context?.setFillColor(UIColor.clear.cgColor)
-        context?.fill(CGRect(x: CGFloat.zero,
-                             y: CGFloat.zero,
+        context?.fill(CGRect(x: .zero,
+                             y: .zero,
                              width: outputSize.width,
                              height: outputSize.height))
         
@@ -37,12 +41,14 @@ extension CGImage {
         context?.concatenate(uiCoords)
         context?.concatenate(transform)
         context?.scaleBy(x: 1.0, y: -1.0)
-        context?.draw(self, in: CGRect(x: (-imageViewSize.width.half),
-                                       y: (-imageViewSize.height.half),
-                                       width: imageViewSize.width,
-                                       height: imageViewSize.height))
+        let rect = CGRect(x: (-imageViewSize.width.half),
+                          y: (-imageViewSize.height.half),
+                          width: imageViewSize.width,
+                          height: imageViewSize.height)
+        context?.draw(self,
+                      in: rect)
         
-        let result = context!.makeImage()!
+        let result = context?.makeImage()
         
         return result
     }

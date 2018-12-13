@@ -10,10 +10,10 @@ import Foundation
 
 extension IGRPhotoTweakViewController {
     public func changeAngle(radians: CGFloat) {
-        self.photoView.changeAngle(radians: radians)
+        self.photoView?.changeAngle(radians: radians)
     }
     
     public func stopChangeAngle() {
-        self.photoView.stopChangeAngle()
+        self.photoView?.stopChangeAngle()
     }
 }

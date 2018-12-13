@@ -29,7 +29,7 @@ open class IGRPhotoTweakViewController: UIViewController {
     /*
      Image to process.
      */
-    public var image: UIImage!
+    public var image: UIImage?
     
     /*
      The optional photo tweaks controller delegate.
@@ -45,7 +45,7 @@ open class IGRPhotoTweakViewController: UIViewController {
     
     //MARK: - Private VARs
     
-    public lazy var photoView: IGRPhotoTweakView! = { [unowned self] by in
+    public lazy var photoView: IGRPhotoTweakView? = { [unowned self] by in
         
         let photoView = IGRPhotoTweakView(frame: self.view.bounds,
                                           image: self.image,
@@ -73,16 +73,20 @@ open class IGRPhotoTweakViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override open func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override open func viewWillTransition(to size: CGSize,
+                                          with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
         coordinator.animate(alongsideTransition: { (UIViewControllerTransitionCoordinatorContext) in
-            self.photoView.applyDeviceRotation()
+            self.photoView?.applyDeviceRotation()
         })
     }
     
     fileprivate func setupSubviews() {
-        self.view.sendSubviewToBack(self.photoView)
+        guard let photoView = self.photoView else {
+            return
+        }
+        self.view.sendSubviewToBack(photoView)
     }
     
     open func setupThemes() {
@@ -99,7 +103,7 @@ open class IGRPhotoTweakViewController: UIViewController {
     // MARK: - Public
     
     public func resetView() {
-        self.photoView.resetView()
+        self.photoView?.resetView()
         self.stopChangeAngle()
     }
     
@@ -108,25 +112,29 @@ open class IGRPhotoTweakViewController: UIViewController {
     }
     
     public func cropAction() {
+        guard let photoView = self.photoView,
+        let image = image else {
+            return
+        }
         var transform = CGAffineTransform.identity
         // translate
-        let translation: CGPoint = self.photoView.photoTranslation
+        let translation: CGPoint = photoView.photoTranslation
         transform = transform.translatedBy(x: translation.x, y: translation.y)
         // rotate
-        transform = transform.rotated(by: self.photoView.radians)
+        transform = transform.rotated(by: photoView.radians)
         // scale
         
-        let t: CGAffineTransform = self.photoView.photoContentView.transform
+        let t: CGAffineTransform = photoView.photoContentView.transform
         let xScale: CGFloat = sqrt(t.a * t.a + t.c * t.c)
         let yScale: CGFloat = sqrt(t.b * t.b + t.d * t.d)
         transform = transform.scaledBy(x: xScale, y: yScale)
         
-        if let fixedImage = self.image.cgImageWithFixedOrientation() {
+        if let fixedImage = image.cgImageWithFixedOrientation(),
             let imageRef = fixedImage.transformedImage(transform,
-                                                       zoomScale: self.photoView.scrollView.zoomScale,
-                                                       sourceSize: self.image.size,
-                                                       cropSize: self.photoView.cropView.frame.size,
-                                                       imageViewSize: self.photoView.photoContentView.bounds.size)
+                                                       zoomScale: photoView.scrollView.zoomScale,
+                                                       sourceSize: image.size,
+                                                       cropSize: photoView.cropView.frame.size,
+                                                       imageViewSize: photoView.photoContentView.bounds.size) {
             
             let image = UIImage(cgImage: imageRef)
             

@@ -39,8 +39,12 @@ extension IGRPhotoTweakView : IGRCropViewDelegate {
                                    height: (scale * cropView.frame.size.height))
         
         // calculate the new bounds of scroll view
-        let width: CGFloat = abs(cos(self.radians)) * newCropBounds.size.width + abs(sin(self.radians)) * newCropBounds.size.height
-        let height: CGFloat = abs(sin(self.radians)) * newCropBounds.size.width + abs(cos(self.radians)) * newCropBounds.size.height
+        let width: CGFloat =
+            abs(cos(self.radians)) * newCropBounds.size.width +
+                abs(sin(self.radians)) * newCropBounds.size.height
+        let height: CGFloat =
+            abs(sin(self.radians)) * newCropBounds.size.width +
+                abs(cos(self.radians)) * newCropBounds.size.height
         
         // calculate the zoom area of scroll view
         var scaleFrame: CGRect = cropView.frame
@@ -57,18 +61,23 @@ extension IGRPhotoTweakView : IGRCropViewDelegate {
         var bounds: CGRect = self.scrollView.bounds
         bounds.size.width = width
         bounds.size.height = height
-        self.scrollView.bounds = CGRect(x: CGFloat.zero, y: CGFloat.zero, width: width, height: height)
+        self.scrollView.bounds = CGRect(x: .zero,
+                                        y: .zero,
+                                        width: width,
+                                        height: height)
         let newContentOffset = CGPoint(x: (contentOffsetCenter.x - self.scrollView.bounds.size.width.half),
                                        y: (contentOffsetCenter.y - self.scrollView.bounds.size.height.half))
         self.scrollView.contentOffset = newContentOffset
         
-        UIView.animate(withDuration: kAnimationDuration, animations: {() -> Void in
+        UIView.animate(withDuration: kAnimationDuration,
+                       animations: {() -> Void in
             // animate crop view
-            cropView.bounds = CGRect(x: CGFloat.zero,
-                                     y: CGFloat.zero,
+            cropView.bounds = CGRect(x: .zero,
+                                     y: .zero,
                                      width: (newCropBounds.size.width),
                                      height: (newCropBounds.size.height))
-            cropView.center = CGPoint(x: self.frame.width.half, y: self.centerY)
+            cropView.center = CGPoint(x: self.frame.width.half,
+                                      y: self.centerY)
             
             // zoom the specified area of scroll view
             let zoomRect: CGRect = self.convert(scaleFrame,
@@ -87,7 +96,8 @@ extension IGRPhotoTweakView : IGRCropViewDelegate {
         var scaleM: CGFloat = max(scaleH, scaleW)
         scaleM = min(1.0, scaleM)
         
-        UIView.animate(withDuration: kAnimationDuration, animations: {() -> Void in
+        UIView.animate(withDuration: kAnimationDuration,
+                       animations: {() -> Void in
             self.scrollView.checkContentOffset()
             self.cropView.layoutIfNeeded()
         })
@@ -96,8 +106,10 @@ extension IGRPhotoTweakView : IGRCropViewDelegate {
         self.manualMove = false
     }
     
-    public func cropViewInsideValidFrame(for point: CGPoint, from cropView: IGRCropView) -> Bool {
-        let updatedPoint = self.convert(point, to: self.scrollView.photoContentView)
+    public func cropViewInsideValidFrame(for point: CGPoint,
+                                         from cropView: IGRCropView) -> Bool {
+        let updatedPoint = self.convert(point,
+                                        to: self.scrollView.photoContentView)
         let frame =  self.scrollView.photoContentView.frame
         return frame.contains(updatedPoint)
     }

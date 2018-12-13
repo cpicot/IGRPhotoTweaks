@@ -10,18 +10,18 @@ import UIKit
 
 public class IGRPhotoContentView: UIView {
     
-    lazy fileprivate var imageView: UIImageView! = {
+    lazy fileprivate var imageView: UIImageView? = {
         let imageView = UIImageView(frame: self.bounds)
         self.addSubview(imageView)
         
         return imageView
     }()
     
-    public var image: UIImage! {
+    public var image: UIImage? {
         didSet {
-            self.imageView.frame = self.bounds
-            self.imageView.image = self.image
-            self.imageView.isUserInteractionEnabled = true
+            self.imageView?.frame = self.bounds
+            self.imageView?.image = self.image
+            self.imageView?.isUserInteractionEnabled = true
         }
     }
     

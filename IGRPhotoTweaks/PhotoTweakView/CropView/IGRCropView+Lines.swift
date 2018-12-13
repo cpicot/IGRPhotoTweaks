@@ -71,21 +71,34 @@ extension IGRCropView {
     }
     
     public func dismissCropLines() {
-        UIView.animate(withDuration: kAnimationDuration, animations: {() -> Void in
-            self.dismiss(self.horizontalCropLines)
-            self.dismiss(self.verticalCropLines)
-        }, completion: {(_ finished: Bool) -> Void in
-            self.isCropLinesDismissed = true
+        let animation: (() -> Void) = { [weak self] () -> Void in
+            guard let horizontalCropLines = self?.horizontalCropLines,
+                let verticalCropLines = self?.verticalCropLines else {
+                    return
+            }
+            self?.dismiss(horizontalCropLines)
+            self?.dismiss(verticalCropLines)
+        }
+        UIView.animate(withDuration: kAnimationDuration,
+                       animations: animation,
+                       completion: {(_ finished: Bool) -> Void in
+                self.isCropLinesDismissed = true
         })
     }
     
     fileprivate func showCropLines() {
+        let animation: (() -> Void) = { [weak self] () -> Void in
+            guard let horizontalCropLines = self?.horizontalCropLines,
+                let verticalCropLines = self?.verticalCropLines else {
+                    return
+            }
+            self?.show(horizontalCropLines)
+            self?.show(verticalCropLines)
+        }
         if self.isCropLinesDismissed {
             self.isCropLinesDismissed = false
-            UIView.animate(withDuration: kAnimationDuration, animations: {() -> Void in
-                self.show(self.horizontalCropLines)
-                self.show(self.verticalCropLines)
-            })
+            UIView.animate(withDuration: kAnimationDuration,
+                           animations: animation)
         }
     }
     
@@ -95,34 +108,48 @@ extension IGRCropView {
         // show grid lines
         self.showGridLines()
         
-        let animationBlock: (() -> Void)? = {
-            self.layoutIfNeeded()
+        let animationBlock: (() -> Void) = { [weak self] in
+            self?.layoutIfNeeded()
         }
         
         if animate {
-            UIView.animate(withDuration: kAnimationDuration, animations: animationBlock!)
+            UIView.animate(withDuration: kAnimationDuration,
+                           animations: animationBlock)
         }
         else {
-            animationBlock!()
+            animationBlock()
         }
     }
     
     public func dismissGridLines() {
-        UIView.animate(withDuration: kAnimationDuration, animations: {() -> Void in
-            self.dismiss(self.horizontalGridLines)
-            self.dismiss(self.verticalGridLines)
-        }, completion: {(_ finished: Bool) -> Void in
-            self.isGridLinesDismissed = true
+        let animation: (() -> Void) = { [weak self] () -> Void in
+            guard let horizontalGridLines = self?.horizontalGridLines,
+                let verticalGridLines = self?.verticalGridLines else {
+                    return
+            }
+            self?.dismiss(horizontalGridLines)
+            self?.dismiss(verticalGridLines)
+        }
+        UIView.animate(withDuration: kAnimationDuration,
+                       animations: animation,
+                       completion: { [weak self] (_ finished: Bool) -> Void in
+                self?.isGridLinesDismissed = true
         })
     }
     
     fileprivate func showGridLines() {
         if self.isGridLinesDismissed {
+            let animation: (() -> Void) = { [weak self] () -> Void in
+                guard let horizontalGridLines = self?.horizontalGridLines,
+                    let verticalGridLines = self?.verticalGridLines else {
+                        return
+                }
+                self?.show(horizontalGridLines)
+                self?.show(verticalGridLines)
+            }
             self.isGridLinesDismissed = false
-            UIView.animate(withDuration: kAnimationDuration, animations: {() -> Void in
-                self.show(self.horizontalGridLines)
-                self.show(self.verticalGridLines)
-            })
+            UIView.animate(withDuration: kAnimationDuration,
+                           animations: animation)
         }
     }
     
