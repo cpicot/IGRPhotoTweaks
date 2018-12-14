@@ -21,4 +21,8 @@ extension IGRPhotoTweakViewController {
         self.photoView?.lockAspectRatio(lock)
     }
     
+    public func lockCropUpdate(_ lock: Bool) {
+        self.photoView?.lockCropUpdate(lock)
+    }
+    
 }

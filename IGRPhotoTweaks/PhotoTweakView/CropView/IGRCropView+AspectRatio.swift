@@ -40,4 +40,9 @@ extension IGRCropView {
         resetAspectRect()
         self.isAspectRatioLocked = lock
     }
+    
+    public func lockUpdateCrop(_ lock: Bool) {
+        resetAspectRect()
+        self.isCropUpdateLocked = lock
+    }
 }

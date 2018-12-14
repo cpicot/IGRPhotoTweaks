@@ -18,7 +18,7 @@ extension IGRCropView {
     }
     
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if touches.count == 1 {
+        if touches.count == 1 && !isCropUpdateLocked {
             let location: CGPoint = (touches.first?.location(in: self))!
             var frame: CGRect = self.frame
             

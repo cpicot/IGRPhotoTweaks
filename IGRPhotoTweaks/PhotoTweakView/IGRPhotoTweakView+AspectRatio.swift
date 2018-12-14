@@ -32,4 +32,8 @@ extension IGRPhotoTweakView {
     public func lockAspectRatio(_ lock: Bool) {
         self.cropView.lockAspectRatio(lock)
     }
+    
+    public func lockCropUpdate(_ lock: Bool) {
+        self.cropView.lockUpdateCrop(lock)
+    }
 }

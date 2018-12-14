@@ -40,6 +40,7 @@ public class IGRCropView: UIView {
     
     weak var delegate: IGRCropViewDelegate?
     
+    
     //MARK: - Private VARs
     
     internal lazy var horizontalCropLines: [IGRCropLine] = { [unowned self] by in
@@ -74,6 +75,7 @@ public class IGRCropView: UIView {
     internal var isCropLinesDismissed: Bool  = true
     internal var isGridLinesDismissed: Bool  = true
     
+    internal var isCropUpdateLocked: Bool = false
     internal var isAspectRatioLocked: Bool = false
     internal var aspectRatioWidth: CGFloat = .zero
     internal var aspectRatioHeight: CGFloat = .zero
