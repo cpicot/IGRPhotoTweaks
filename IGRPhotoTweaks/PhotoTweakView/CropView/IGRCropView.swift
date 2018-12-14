@@ -43,13 +43,13 @@ public class IGRCropView: UIView {
     
     //MARK: - Private VARs
     
-    internal lazy var horizontalCropLines: [IGRCropLine] = { [unowned self] by in
+    private lazy var _horizontalCropLines: [IGRCropLine] = { [unowned self] by in
         var lines = self.setupHorisontalLines(count: self.cropLinesCount,
                                                     className: IGRCropLine.self)
         return lines as? [IGRCropLine] ?? []
         }(())
     
-    internal lazy var verticalCropLines: [IGRCropLine] = { [unowned self] by in
+    private lazy var _verticalCropLines: [IGRCropLine] = { [unowned self] by in
         var lines = self.setupVerticalLines(count: self.cropLinesCount,
                                             className: IGRCropLine.self)
         return lines as? [IGRCropLine] ?? []
@@ -66,6 +66,14 @@ public class IGRCropView: UIView {
                                             className: IGRCropGridLine.self)
         return lines as? [IGRCropGridLine] ?? []
         }(())
+    
+    internal var horizontalCropLines: [IGRCropLine] {
+        return isCropUpdateLocked ? [] : _horizontalCropLines
+    }
+    
+    internal var verticalCropLines: [IGRCropLine] {
+        return isCropUpdateLocked ? [] : _verticalCropLines
+    }
     
     internal var horizontalGridLines: [IGRCropGridLine] {
         return isCropUpdateLocked ? [] : _horizontalGridLines
