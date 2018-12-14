@@ -106,7 +106,7 @@ public class IGRCropView: UIView {
     
     fileprivate func setup() {
         
-        self.seetupLines()
+        self.setupLines()
         
         let upperLeft = IGRCropCornerView(cornerType: .upperLeft,
                                           lineWidth: cornerBorderWidth,

@@ -10,7 +10,7 @@ import Foundation
 
 extension IGRCropView {
     
-    internal func seetupLines() {
+    internal func setupLines() {
         self.dismiss(self.horizontalCropLines)
         self.dismiss(self.verticalCropLines)
         self.dismiss(self.horizontalGridLines)
@@ -138,7 +138,7 @@ extension IGRCropView {
     }
     
     fileprivate func showGridLines() {
-        if self.isGridLinesDismissed {
+        if self.isGridLinesDismissed && !isCropUpdateLocked {
             let animation: (() -> Void) = { [weak self] () -> Void in
                 guard let horizontalGridLines = self?.horizontalGridLines,
                     let verticalGridLines = self?.verticalGridLines else {
