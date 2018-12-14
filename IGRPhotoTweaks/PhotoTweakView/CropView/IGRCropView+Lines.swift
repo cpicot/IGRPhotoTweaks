@@ -27,7 +27,7 @@ extension IGRCropView {
     }
     
     internal func setupHorisontalLines(count: Int, className: UIView.Type) -> [UIView] {
-        var lines = [UIView]()
+        var lines: [UIView] = []
         for idx in 0 ..< count {
             let line = self.createLine(for: className)
             lines.append(line)
@@ -40,7 +40,7 @@ extension IGRCropView {
     }
     
     internal func setupVerticalLines(count: Int, className: UIView.Type) -> [UIView] {
-        var lines = [UIView]()
+        var lines: [UIView] = []
         for idx in 0 ..< count {
             let line = self.createLine(for: className)
             lines.append(line)

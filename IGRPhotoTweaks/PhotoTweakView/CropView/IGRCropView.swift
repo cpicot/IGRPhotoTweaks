@@ -55,16 +55,24 @@ public class IGRCropView: UIView {
         return lines as? [IGRCropLine] ?? []
         }(())
     
-    internal lazy var horizontalGridLines: [IGRCropGridLine] = { [unowned self] by in
+    private lazy var _horizontalGridLines: [IGRCropGridLine] = { [unowned self] by in
         var lines = self.setupHorisontalLines(count: self.gridLinesCount,
                                               className: IGRCropGridLine.self)
         return lines as? [IGRCropGridLine] ?? []
         }(())
-    internal lazy var verticalGridLines: [IGRCropGridLine] = { [unowned self] by in
+    
+    private lazy var _verticalGridLines: [IGRCropGridLine] = { [unowned self] by in
         var lines = self.setupVerticalLines(count: self.gridLinesCount,
                                             className: IGRCropGridLine.self)
         return lines as? [IGRCropGridLine] ?? []
         }(())
+    
+    internal var horizontalGridLines: [IGRCropGridLine] {
+        return isCropUpdateLocked ? [] : _horizontalGridLines
+    }
+    internal var verticalGridLines: [IGRCropGridLine] {
+        return isCropUpdateLocked ? [] : _verticalGridLines
+    }
     
     internal var cornerBorderLength      = kCropViewCornerLength
     internal var cornerBorderWidth       = kCropViewCornerWidth
