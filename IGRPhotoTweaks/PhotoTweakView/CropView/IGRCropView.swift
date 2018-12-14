@@ -83,7 +83,11 @@ public class IGRCropView: UIView {
     internal var isCropLinesDismissed: Bool  = true
     internal var isGridLinesDismissed: Bool  = true
     
-    internal var isCropUpdateLocked: Bool = false
+    internal var isCropUpdateLocked: Bool = false {
+        willSet {
+            setupLines()
+        }
+    }
     internal var isAspectRatioLocked: Bool = false
     internal var aspectRatioWidth: CGFloat = .zero
     internal var aspectRatioHeight: CGFloat = .zero
