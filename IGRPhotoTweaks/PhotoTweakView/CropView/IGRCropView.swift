@@ -75,8 +75,8 @@ public class IGRCropView: UIView {
     internal var isGridLinesDismissed: Bool  = true
     
     internal var isAspectRatioLocked: Bool = false
-    internal var aspectRatioWidth: CGFloat = CGFloat.zero
-    internal var aspectRatioHeight: CGFloat = CGFloat.zero
+    internal var aspectRatioWidth: CGFloat = .zero
+    internal var aspectRatioHeight: CGFloat = .zero
     
     // MARK: - Life Cicle
     

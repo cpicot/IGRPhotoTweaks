@@ -19,7 +19,7 @@ extension IGRCropView {
     
     fileprivate func createLine(for className: UIView.Type) -> UIView {
         let line = className.init()
-        line.alpha = CGFloat.zero
+        line.alpha = .zero
         self.addSubview(line)
         line.translatesAutoresizingMaskIntoConstraints = false
         
@@ -157,7 +157,7 @@ extension IGRCropView {
     
     fileprivate func dismiss(_ lines: [UIView]) {
         for (_, line) in lines.enumerated() {
-            line.alpha = CGFloat.zero
+            line.alpha = .zero
         }
     }
     
