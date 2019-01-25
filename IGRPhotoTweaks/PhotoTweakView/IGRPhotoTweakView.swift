@@ -179,7 +179,7 @@ public class IGRPhotoTweakView: UIView {
             CGSize(width: (kMaximumCanvasWidthRatio * self.frame.size.width),
                    height: (kMaximumCanvasHeightRatio * self.frame.size.height - self.canvasHeaderHeigth()))
         
-        self.centerY = maxCanvasSize.height.half + self.canvasHeaderHeigth()
+        self.centerY = self.frame.height.half + self.canvasHeaderHeigth() //maxCanvasSize.height.half + self.canvasHeaderHeigth()
         
         let width = self.image?.size.width ?? 0
         let height = self.image?.size.height ?? 0
