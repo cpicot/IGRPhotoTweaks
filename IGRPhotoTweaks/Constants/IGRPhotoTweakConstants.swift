@@ -18,11 +18,11 @@ enum CropCornerType : Int {
 let kCropLinesCount: Int = 2
 let kGridLinesCount: Int = 8
 
-let kCropViewHotArea: CGFloat           = 40.0
+let kCropViewHotArea: CGFloat           = 16.0 //40.0
 
 let kMaximumCanvasWidthRatio: CGFloat   = 0.9
-let kMaximumCanvasHeightRatio: CGFloat  = 0.8
-let kCanvasHeaderHeigth: CGFloat        = 100.0
+let kMaximumCanvasHeightRatio: CGFloat  = 0.9 //0.8
+let kCanvasHeaderHeigth: CGFloat        = 0 //100.0
 
 let kCropViewLineWidth: CGFloat         = 2.0
 
@@ -30,3 +30,5 @@ let kCropViewCornerWidth: CGFloat       = 2.0
 let kCropViewCornerLength: CGFloat      = 22.0
 
 let kAnimationDuration: TimeInterval    = 0.25
+
+
