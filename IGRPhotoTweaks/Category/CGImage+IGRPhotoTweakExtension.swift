@@ -19,14 +19,29 @@ extension CGImage {
         let expectedHeight = floor(sourceSize.height / imageViewSize.height * cropSize.height) / zoomScale
         let outputSize = CGSize(width: expectedWidth, height: expectedHeight)
         let bitmapBytesPerRow = 0
-        
+      
+        var bitmapInfo = self.bitmapInfo
+        // Fix alpha channel issues if necessary
+        let alpha = (bitmapInfo.rawValue & CGBitmapInfo.alphaInfoMask.rawValue)
+      
+        if alpha == CGImageAlphaInfo.none.rawValue {
+          bitmapInfo.remove(.alphaInfoMask)
+          bitmapInfo = CGBitmapInfo(rawValue: bitmapInfo.rawValue |
+            CGImageAlphaInfo.noneSkipFirst.rawValue)
+        } else if !(alpha == CGImageAlphaInfo.noneSkipFirst.rawValue) ||
+          !(alpha == CGImageAlphaInfo.noneSkipLast.rawValue) {
+          bitmapInfo.remove(.alphaInfoMask)
+          bitmapInfo = CGBitmapInfo(rawValue: bitmapInfo.rawValue |
+            CGImageAlphaInfo.premultipliedFirst.rawValue)
+        }
+      
         let context = CGContext(data: nil,
                                 width: Int(outputSize.width),
                                 height: Int(outputSize.height),
                                 bitsPerComponent: self.bitsPerComponent,
                                 bytesPerRow: bitmapBytesPerRow,
                                 space: self.colorSpace ?? CGColorSpaceCreateDeviceRGB(),
-                                bitmapInfo: self.bitmapInfo.rawValue)
+                                bitmapInfo: bitmapInfo.rawValue)
         context?.setFillColor(UIColor.clear.cgColor)
         context?.fill(CGRect(x: .zero,
                              y: .zero,
