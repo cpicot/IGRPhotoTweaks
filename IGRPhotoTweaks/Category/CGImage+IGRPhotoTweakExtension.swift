@@ -35,13 +35,23 @@ extension CGImage {
             CGImageAlphaInfo.premultipliedFirst.rawValue)
         }
       
-        let context = CGContext(data: nil,
+        var context = CGContext(data: nil,
                                 width: Int(outputSize.width),
                                 height: Int(outputSize.height),
                                 bitsPerComponent: self.bitsPerComponent,
                                 bytesPerRow: bitmapBytesPerRow,
                                 space: self.colorSpace ?? CGColorSpaceCreateDeviceRGB(),
                                 bitmapInfo: bitmapInfo.rawValue)
+      
+        if context == nil { // fail case: force bitmapInfo
+          context = CGContext(data: nil,
+                            width: Int(outputSize.width),
+                            height: Int(outputSize.height),
+                            bitsPerComponent: self.bitsPerComponent,
+                            bytesPerRow: bitmapBytesPerRow,
+                            space: self.colorSpace ?? CGColorSpaceCreateDeviceRGB(),
+                            bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue).rawValue)
+        }
         context?.setFillColor(UIColor.clear.cgColor)
         context?.fill(CGRect(x: .zero,
                              y: .zero,
