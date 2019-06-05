@@ -38,11 +38,6 @@ open class IGRPhotoTweakViewController: UIViewController {
     
     //MARK: - Protected VARs
     
-    /*
-     Flag indicating whether the image cropped will be saved to photo library automatically. Defaults to YES.
-     */
-    internal var isAutoSaveToLibray: Bool = false
-    
     internal var isBorderHidden: Bool = false
     
     //MARK: - Private VARs
@@ -149,11 +144,6 @@ open class IGRPhotoTweakViewController: UIViewController {
                                                        imageViewSize: photoView.photoContentView.bounds.size) {
             
             let image = UIImage(cgImage: imageRef)
-            
-            if self.isAutoSaveToLibray {
-                
-                self.saveToLibrary(image: image)
-            }
             
             self.delegate?.photoTweaksController(self, didFinishWithCroppedImage: image)
         }
