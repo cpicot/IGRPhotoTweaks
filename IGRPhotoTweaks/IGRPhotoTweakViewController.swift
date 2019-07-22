@@ -118,7 +118,10 @@ open class IGRPhotoTweakViewController: UIViewController {
         self.delegate?.photoTweaksControllerDidCancel(self)
     }
     
-    public func cropAction() {
+    /// cropAction do the crop computing
+    /// If the expected output will be smaller than the original image,
+    /// set forcedOutputSize can significantly reduce the memory consumption of this operation
+    public func cropAction(forcedOutputSize: CGSize? = nil) {
         guard let photoView = self.photoView,
         let image = image else {
             return
@@ -136,12 +139,13 @@ open class IGRPhotoTweakViewController: UIViewController {
         let yScale: CGFloat = sqrt(t.b * t.b + t.d * t.d)
         transform = transform.scaledBy(x: xScale, y: yScale)
         
-        if let fixedImage = image.cgImageWithFixedOrientation(),
+        if let fixedImage = image.cgImageWithFixedOrientation(forcedOutputSize: forcedOutputSize),
             let imageRef = fixedImage.transformedImage(transform,
                                                        zoomScale: photoView.scrollView.zoomScale,
                                                        sourceSize: image.size,
                                                        cropSize: photoView.cropView.frame.size,
-                                                       imageViewSize: photoView.photoContentView.bounds.size) {
+                                                       imageViewSize: photoView.photoContentView.bounds.size,
+                                                       forcedOutputSize: forcedOutputSize) {
             
             let image = UIImage(cgImage: imageRef)
             

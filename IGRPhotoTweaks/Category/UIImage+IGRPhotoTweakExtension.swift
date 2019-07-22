@@ -10,7 +10,7 @@ import UIKit
 
 extension UIImage {
     
-    func cgImageWithFixedOrientation() -> CGImage? {
+    func cgImageWithFixedOrientation(forcedOutputSize: CGSize? = nil) -> CGImage? {
         
         guard let cgImage = self.cgImage,
             let colorSpace = cgImage.colorSpace else {
@@ -21,8 +21,15 @@ extension UIImage {
             return self.cgImage
         }
         
-        let width  = self.size.width
-        let height = self.size.height
+        let width: CGFloat
+        let height: CGFloat
+        if let forcedOutputSize = forcedOutputSize {
+            width = forcedOutputSize.width
+            height = forcedOutputSize.height
+        } else {
+            width = self.size.width
+            height = self.size.height
+        }
         
         var transform = CGAffineTransform.identity
         

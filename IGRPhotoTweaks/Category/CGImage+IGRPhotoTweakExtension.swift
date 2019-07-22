@@ -14,10 +14,16 @@ extension CGImage {
                           zoomScale: CGFloat,
                           sourceSize: CGSize,
                           cropSize: CGSize,
-                          imageViewSize: CGSize) -> CGImage? {
-        let expectedWidth = floor(sourceSize.width / imageViewSize.width * cropSize.width) / zoomScale
-        let expectedHeight = floor(sourceSize.height / imageViewSize.height * cropSize.height) / zoomScale
-        let outputSize = CGSize(width: expectedWidth, height: expectedHeight)
+                          imageViewSize: CGSize,
+                          forcedOutputSize: CGSize? = nil) -> CGImage? {
+        let outputSize: CGSize
+        if let forcedOutputSize = forcedOutputSize {
+            outputSize = forcedOutputSize
+        } else {
+            let expectedWidth = floor(sourceSize.width / imageViewSize.width * cropSize.width) / zoomScale
+            let expectedHeight = floor(sourceSize.height / imageViewSize.height * cropSize.height) / zoomScale
+            outputSize = CGSize(width: expectedWidth, height: expectedHeight)
+        }
         let bitmapBytesPerRow = 0
       
         var bitmapInfo = self.bitmapInfo
