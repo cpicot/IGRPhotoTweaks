@@ -49,13 +49,13 @@ extension CGImage {
                                 space: self.colorSpace ?? CGColorSpaceCreateDeviceRGB(),
                                 bitmapInfo: bitmapInfo.rawValue)
       
-        if context == nil { // fail case: force bitmapInfo
+        if context == nil { // fail case: force bitmapInfo ans colorSpace
           context = CGContext(data: nil,
                             width: Int(outputSize.width),
                             height: Int(outputSize.height),
                             bitsPerComponent: self.bitsPerComponent,
                             bytesPerRow: bitmapBytesPerRow,
-                            space: self.colorSpace ?? CGColorSpaceCreateDeviceRGB(),
+                            space: CGColorSpaceCreateDeviceRGB(),
                             bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue).rawValue)
         }
         context?.setFillColor(UIColor.clear.cgColor)
